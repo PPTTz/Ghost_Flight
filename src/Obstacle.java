@@ -24,7 +24,7 @@ public class Obstacle {
 
     private boolean passed = false;
     private int speed;
-    private static final int GAP_HEIGHT = 180; // ช่องว่าง
+    private static final int GAP_HEIGHT = 170; // ช่องว่าง
 
     private BufferedImage topPipeImage;
     private BufferedImage bottomPipeImage;
@@ -34,9 +34,9 @@ public class Obstacle {
 
     public Obstacle(int x, int stage, int speed) {
         this.speed = speed;
-        loadPipeImages(stage); // โหลดรูป (อาจกำหนด actualImageWidth)
+        loadPipeImages(stage); 
 
-        // ## กำหนดค่า Visual Width และ Hitbox ทั้งหมดตามด่าน (ใช้ค่าที่คุณให้มา) ##
+        // กำหนดค่า Visual Width และ Hitbox ทั้งหมดตามด่าน
         switch (stage) {
             case 1: // ด่านวัด
                 this.visualWidth = 300;
@@ -132,12 +132,6 @@ public class Obstacle {
              g.fillRect(boundsRect.x, bottomY, visualWidth, bottomHeight);
         }
 
-        // วาดกรอบ Hitbox
-        g.setColor(Color.MAGENTA);
-        Rectangle topHitbox = getTopBounds();
-        Rectangle bottomHitbox = getBottomBounds();
-        g.drawRect(topHitbox.x, topHitbox.y, topHitbox.width, topHitbox.height);
-        g.drawRect(bottomHitbox.x, bottomHitbox.y, bottomHitbox.width, bottomHitbox.height);
     }
 
     /**
@@ -148,9 +142,6 @@ public class Obstacle {
         return new Rectangle((int)(boundsRect.x + this.hitboxOffsetX), 0, (int)this.hitboxWidth, hitboxHeight);
     }
 
-    /**
-     * คืนค่า Rectangle ของ Hitbox ท่อนล่าง
-     */
     public Rectangle getBottomBounds() {
         int hitboxY = topHeight + GAP_HEIGHT + this.hitboxBottomReduction;
         int hitboxHeight = Math.max(1, bottomHeight - this.hitboxBottomReduction);

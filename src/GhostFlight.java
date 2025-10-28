@@ -1,9 +1,6 @@
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-/**
- * GhostFlight: คลาสหลักสำหรับเริ่มต้นโปรแกรม
- */
 public class GhostFlight {
     public static void main(String[] args) {
         

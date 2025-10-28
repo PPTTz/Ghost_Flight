@@ -43,25 +43,24 @@ public class GamePanel extends JPanel implements Runnable {
     private double finalProgress = 0.0; // เก็บค่า Progress Bar สุดท้ายตอนจบเกม
     private int coinsSpawnedThisStage; // นับจำนวนเหรียญที่สร้างในด่านปัจจุบัน
 
-    // --- ตัวแปรสำหรับ Thread และการสุ่ม ---
+    // ตัวแปรสำหรับ Thread และการสุ่ม
     private Thread gameThread; // Thread ที่ใช้รัน Game Loop
     private Random rand = new Random(); // Object สำหรับสุ่มค่าต่างๆ
 
-    // --- ตัวแปรเก็บรูปภาพ ---
+    // ตัวแปรเก็บรูปภาพ
     private BufferedImage bgStage1, bgStage2, bgStage3; // พื้นหลังแต่ละด่าน
     private BufferedImage menuKrahangImage, menuKrasueImage; // รูปตัวละครในหน้าเมนู
     private BufferedImage titleImage; // รูปโลโก้เกม
 
-    // --- ตัวแปรเก็บขอบเขตปุ่ม (สำหรับเช็คการคลิก) ---
-    // << 1. ปรับตำแหน่ง Y ของปุ่มต่างๆ ในหน้าเมนู >>
-    private Rectangle startButton = new Rectangle((SCREEN_WIDTH - 150) / 2, 450, 150, 50); // เลื่อนลงมาหน่อย
+    // ตัวแปรเก็บขอบเขตปุ่ม
+
+    private Rectangle startButton = new Rectangle((SCREEN_WIDTH - 150) / 2, 450, 150, 50); 
     private Rectangle restartButton = new Rectangle((SCREEN_WIDTH - 150) / 2, 350, 150, 50);
     private Rectangle menuButton = new Rectangle((SCREEN_WIDTH - 150) / 2, 420, 150, 50);
-    // << ปรับค่า Y ที่นี่เพื่อเลื่อนรูปตัวละครลง >>
-    private Rectangle krahangButton = new Rectangle(SCREEN_WIDTH / 2 - 150, 280, 100, 100); // Y = 280 (จากเดิม 250)
-    private Rectangle krasueButton = new Rectangle(SCREEN_WIDTH / 2 + 50, 280, 100, 100); // Y = 280 (จากเดิม 250)
+    private Rectangle krahangButton = new Rectangle(SCREEN_WIDTH / 2 - 150, 280, 100, 100); 
+    private Rectangle krasueButton = new Rectangle(SCREEN_WIDTH / 2 + 50, 280, 100, 100); 
 
-    // --- Constructor (เมธอดที่ทำงานตอนสร้าง GamePanel) ---
+    // Constructor
     public GamePanel() {
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT)); // กำหนดขนาด Panel
         setFocusable(true); // ทำให้ Panel รับ Input จาก Keyboard ได้
@@ -73,7 +72,7 @@ public class GamePanel extends JPanel implements Runnable {
         startGameThread(); // เริ่ม Game Loop
     }
 
-    // --- เมธอดโหลดรูปภาพ ---
+    // เมธอดโหลดรูปภาพ
     private void loadBackgroundImages() {
         try {
             bgStage1 = ImageIO.read(getClass().getResourceAsStream("/res/temple.png"));
@@ -116,7 +115,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    // --- เมธอดสำหรับ Game Loop Thread ---
+    // เมธอดสำหรับ Game Loop Thread
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
@@ -139,7 +138,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    // --- เมธอดหลักในการจัดการสถานะเกม ---
+    // เมธอดหลักในการจัดการสถานะเกม
     public void resetGame() {
         player = new Player(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2, selectedCharacter);
         obstacles = new ArrayList<>();
@@ -168,7 +167,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    // --- เมธอดจัดการการเคลื่อนที่ ---
+    // เมธอดจัดการการเคลื่อนที่
     private void moveCoins() {
         for (int i = coins.size() - 1; i >= 0; i--) {
             Coin coin = coins.get(i);
@@ -189,7 +188,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    // --- เมธอดจัดการการชน ---
+    // เมธอดจัดการการชน
     private void checkCollisions() {
         if (player.getY() < 0 || player.getY() + player.getHeight() > SCREEN_HEIGHT) { saveFinalProgress(); gameState = GameState.GAME_OVER; return; }
         for (Obstacle obs : obstacles) {
@@ -207,7 +206,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    // --- เมธอดสร้าง Object ---
+    // เมธอดสร้าง Object
     private void spawnObstacle() {
         Obstacle newObstacle = new Obstacle(SCREEN_WIDTH, currentStage, obstacleSpeed);
         obstacles.add(newObstacle);
@@ -226,7 +225,7 @@ public class GamePanel extends JPanel implements Runnable {
         portal = new Portal(SCREEN_WIDTH, SCREEN_HEIGHT / 2 - 60);
     }
 
-    // --- เมธอดจัดการด่าน ---
+    // เมธอดจัดการด่าน
     private void goToNextStage() {
         currentStage++;
         obstacleSpeed -= 2;
@@ -239,7 +238,7 @@ public class GamePanel extends JPanel implements Runnable {
         gracePeriodTimer = System.nanoTime();
     }
 
-    // --- เมธอดตรวจสอบเงื่อนไข ---
+    // เมธอดตรวจสอบเงื่อนไข
     private void checkGracePeriod() {
         if (inGracePeriod) {
             long timeElapsed = System.nanoTime() - gracePeriodTimer;
@@ -254,7 +253,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    // --- เมธอดจัดการ Progress Bar ---
+    //เมธอดจัดการ Progress Bar
     private void saveFinalProgress() {
         if(stageTimer > 0) {
             double timeElapsed = (System.nanoTime() - stageTimer) / 1_000_000_000.0;
@@ -281,7 +280,7 @@ public class GamePanel extends JPanel implements Runnable {
         g.setColor(Color.WHITE); g.drawRect(barX, barY, barWidth, barHeight);
     }
 
-    // --- เมธอดหลักในการวาด ---
+    // เมธอดหลักในการวาด 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -296,7 +295,7 @@ public class GamePanel extends JPanel implements Runnable {
         g2d.dispose();
     }
 
-    // --- เมธอดสำหรับวาดหน้าจอต่างๆ ---
+    //  เมธอดสำหรับวาดหน้าจอต่างๆ 
     private void drawPlaying(Graphics2D g) {
         BufferedImage bgToDraw = null; Color fallbackColor = Color.BLACK;
         switch (currentStage) {
@@ -321,16 +320,16 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    /**
-     * วาดหน้าจอเมนู (ปรับตำแหน่ง Y)
-     */
+    
+     //วาดหน้าจอเมนู 
+     
     private void drawMenu(Graphics2D g) {
         g.setColor(new Color(20, 20, 40)); g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         // --- วาดโลโก้ (ปรับตำแหน่ง Y) ---
         if (titleImage != null) {
             int titleX = (SCREEN_WIDTH - titleImage.getWidth()) / 2;
-            int titleY = 40; // << เลื่อนขึ้นเล็กน้อย >>
+            int titleY = 40; 
             g.drawImage(titleImage, titleX, titleY, null);
         } else {
             g.setColor(Color.WHITE); g.setFont(new Font("Consolas", Font.BOLD, 60));
@@ -339,24 +338,88 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         // --- วาดส่วนเลือกตัวละคร (ใช้ตำแหน่ง Y ใหม่) ---
-        g.setColor(Color.YELLOW); if ("Krahang".equals(selectedCharacter)) { g.drawRect(krahangButton.x - 2, krahangButton.y - 2, krahangButton.width + 4, krahangButton.height + 4); } else { g.drawRect(krasueButton.x - 2, krasueButton.y - 2, krasueButton.width + 4, krasueButton.height + 4); }
-        g.setColor(new Color(100, 100, 100, 150)); g.fillRect(krahangButton.x, krahangButton.y, krahangButton.width, krahangButton.height); g.fillRect(krasueButton.x, krasueButton.y, krasueButton.width, krasueButton.height);
-        if (menuKrahangImage != null) g.drawImage(menuKrahangImage, krahangButton.x, krahangButton.y, krahangButton.width, krahangButton.height, null);
-        if (menuKrasueImage != null) g.drawImage(menuKrasueImage, krasueButton.x, krasueButton.y, krasueButton.width, krasueButton.height, null);
-        g.setColor(Color.WHITE); g.setFont(new Font("Consolas", Font.PLAIN, 20));
-        int krahangNameWidth = g.getFontMetrics().stringWidth("Krahang"); g.drawString("Krahang", krahangButton.x + (krahangButton.width - krahangNameWidth) / 2, krahangButton.y + krahangButton.height + 25); // เพิ่มระยะห่าง Y
-        int krasueNameWidth = g.getFontMetrics().stringWidth("Krasue"); g.drawString("Krasue", krasueButton.x + (krasueButton.width - krasueNameWidth) / 2, krasueButton.y + krasueButton.height + 25); // เพิ่มระยะห่าง Y
+        g.setColor(Color.YELLOW);
+        if ("Krahang".equals(selectedCharacter)) {
+            g.drawRect(krahangButton.x - 2, krahangButton.y - 2, krahangButton.width + 4, krahangButton.height + 4);
+        } 
+        else {
+            g.drawRect(krasueButton.x - 2, krasueButton.y - 2, krasueButton.width + 4, krasueButton.height + 4);
+        }
+        g.setColor(new Color(100, 100, 100, 150));
+        g.fillRect(krahangButton.x, krahangButton.y, krahangButton.width, krahangButton.height);
+        g.fillRect(krasueButton.x, krasueButton.y, krasueButton.width, krasueButton.height);
 
+        if (menuKrahangImage != null) {
+            g.drawImage(menuKrahangImage, krahangButton.x, krahangButton.y, krahangButton.width, krahangButton.height, null);
+        }
+        if (menuKrasueImage != null) {
+            g.drawImage(menuKrasueImage, krasueButton.x, krasueButton.y, krasueButton.width, krasueButton.height, null);
+        }
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Consolas", Font.PLAIN, 20));
+
+        int krahangNameWidth = g.getFontMetrics().stringWidth("Krahang");
+        g.drawString("Krahang", krahangButton.x + (krahangButton.width - krahangNameWidth) / 2, krahangButton.y + krahangButton.height + 25);
+
+        int krasueNameWidth = g.getFontMetrics().stringWidth("Krasue");
+        g.drawString("Krasue", krasueButton.x + (krasueButton.width - krasueNameWidth) / 2, krasueButton.y + krasueButton.height + 25);
         // --- วาดปุ่ม Start (ใช้ตำแหน่ง Y ใหม่) ---
-        g.setColor(new Color(205, 92, 92)); g.fillRect(startButton.x, startButton.y, startButton.width, startButton.height);
-        g.setColor(Color.WHITE); g.setFont(new Font("Consolas", Font.BOLD, 30)); g.drawString("START", startButton.x + 35, startButton.y + 35);
+        g.setColor(new Color(205, 92, 92)); 
+        g.fillRect(startButton.x, startButton.y, startButton.width, startButton.height);
+        g.setColor(Color.WHITE); g.setFont(new Font("Consolas", Font.BOLD, 30)); 
+        g.drawString("START", startButton.x + 35, startButton.y + 35);
     }
 
-    private void drawReadyScreen(Graphics2D g) { g.setColor(new Color(0, 0, 0, 100)); g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT); g.setColor(Color.WHITE); g.setFont(new Font("Consolas", Font.BOLD, 28)); String msg = "Press Space to Fly"; int msgWidth = g.getFontMetrics().stringWidth(msg); g.drawString(msg, (SCREEN_WIDTH - msgWidth) / 2, SCREEN_HEIGHT / 2); }
-    private void drawGameOver(Graphics2D g) { drawPlaying(g); g.setColor(new Color(0, 0, 0, 150)); g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT); g.setColor(Color.RED); g.setFont(new Font("Consolas", Font.BOLD, 50)); int msgWidth = g.getFontMetrics().stringWidth("GAME OVER"); g.drawString("GAME OVER", (SCREEN_WIDTH - msgWidth) / 2, 150); drawEndScreenButtons(g); }
-    private void drawWinScreen(Graphics2D g) { drawPlaying(g); g.setColor(new Color(0, 0, 0, 150)); g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT); g.setColor(Color.CYAN); g.setFont(new Font("Consolas", Font.BOLD, 70)); int msgWidth = g.getFontMetrics().stringWidth("YOU WIN!"); g.drawString("YOU WIN!", (SCREEN_WIDTH - msgWidth) / 2, 150); drawEndScreenButtons(g); }
-    private void drawEndScreenButtons(Graphics2D g) { g.setColor(Color.WHITE); g.setFont(new Font("Consolas", Font.PLAIN, 30)); String scoreText = "SCORE: " + score; int scoreWidth = g.getFontMetrics().stringWidth(scoreText); g.drawString(scoreText, (SCREEN_WIDTH - scoreWidth) / 2, 250); g.setColor(new Color(205, 92, 92)); g.fillRect(restartButton.x, restartButton.y, restartButton.width, restartButton.height); g.setColor(Color.WHITE); g.drawString("RESTART", restartButton.x + 20, restartButton.y + 35); g.setColor(new Color(112, 128, 144)); g.fillRect(menuButton.x, menuButton.y, menuButton.width, menuButton.height); g.setColor(Color.WHITE); g.drawString("MENU", menuButton.x + 45, menuButton.y + 35); }
+    private void drawReadyScreen(Graphics2D g) {
+        g.setColor(new Color(0, 0, 0, 100));
+        g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Consolas", Font.BOLD, 28));
+        String msg = "Press Space to Fly";
+        int msgWidth = g.getFontMetrics().stringWidth(msg);
+        g.drawString(msg, (SCREEN_WIDTH - msgWidth) / 2, SCREEN_HEIGHT / 2);
+    }
 
+    private void drawGameOver(Graphics2D g) {
+        drawPlaying(g);
+        g.setColor(new Color(0, 0, 0, 150));
+        g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        g.setColor(Color.RED);
+        g.setFont(new Font("Consolas", Font.BOLD, 50));
+        int msgWidth = g.getFontMetrics().stringWidth("GAME OVER");
+        g.drawString("GAME OVER", (SCREEN_WIDTH - msgWidth) / 2, 150);
+        drawEndScreenButtons(g);
+    }
+
+    private void drawWinScreen(Graphics2D g) {
+        drawPlaying(g);
+        g.setColor(new Color(0, 0, 0, 150));
+        g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        g.setColor(Color.CYAN);
+        g.setFont(new Font("Consolas", Font.BOLD, 70));
+        int msgWidth = g.getFontMetrics().stringWidth("YOU WIN!");
+        g.drawString("YOU WIN!", (SCREEN_WIDTH - msgWidth) / 2, 150);
+        drawEndScreenButtons(g);
+    }
+
+    private void drawEndScreenButtons(Graphics2D g) {
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Consolas", Font.PLAIN, 30));
+        String scoreText = "SCORE: " + score;
+        int scoreWidth = g.getFontMetrics().stringWidth(scoreText);
+        g.drawString(scoreText, (SCREEN_WIDTH - scoreWidth) / 2, 250);
+
+        g.setColor(new Color(205, 92, 92));
+        g.fillRect(restartButton.x, restartButton.y, restartButton.width, restartButton.height);
+        g.setColor(Color.WHITE);
+        g.drawString("RESTART", restartButton.x + 20, restartButton.y + 35);
+
+        g.setColor(new Color(112, 128, 144));
+        g.fillRect(menuButton.x, menuButton.y, menuButton.width, menuButton.height);
+        g.setColor(Color.WHITE);
+        g.drawString("MENU", menuButton.x + 45, menuButton.y + 35);
+    }
     // --- Inner Classes สำหรับจัดการ Input ---
     private class KeyInput extends KeyAdapter {
         @Override
@@ -385,5 +448,5 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
     }
-} // ปิดคลาส GamePanel
+} 
 

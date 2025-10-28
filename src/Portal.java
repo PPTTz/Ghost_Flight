@@ -11,31 +11,28 @@ import java.io.IOException;
 public class Portal {
     private int x, y;
 
-    // << 1. กำหนดขนาดประตูที่ต้องการตรงนี้ >>
-    private static final int PORTAL_WIDTH = 100; // เช่น กว้าง 100
-    private static final int PORTAL_HEIGHT = 150; // เช่น สูง 150
+    // กำหนดขนาดประตู
+    private static final int PORTAL_WIDTH = 100; 
+    private static final int PORTAL_HEIGHT = 150; 
 
     private int speed = -4; // ความเร็วในการเคลื่อนที่ของประตู
 
     // ตัวแปรสำหรับเก็บรูปภาพประตู
     private BufferedImage portalImage;
 
-    // << เพิ่มตัวแปร width, height เข้าไปในคลาส >>
+    // เพิ่มตัวแปร width, height เข้าไปในคลาส
     private int width;
     private int height;
 
     public Portal(int x, int y) {
         this.x = x;
         this.y = y;
-        // << 2. ใช้ขนาดที่กำหนดเป็น Width, Height ของ Object >>
+        // ใช้ขนาดที่กำหนดเป็น Width, Height ของ Object
         this.width = PORTAL_WIDTH;
         this.height = PORTAL_HEIGHT;
         loadPortalImage(); // เรียกโหลดรูป
     }
 
-    /**
-     * โหลดรูปภาพประตูจากโฟลเดอร์ res
-     */
     private void loadPortalImage() {
         try {
             // โหลดรูปจาก /res/portal.png (ตรวจสอบชื่อไฟล์ให้ถูกต้อง)
@@ -50,15 +47,14 @@ public class Portal {
         }
     }
 
-    // อัปเดตตำแหน่ง (เคลื่อนที่ไปทางซ้าย)
+    // อัปเดตตำแหน่ง 
     public void update() {
         x += speed;
     }
 
-    // วาดรูปภาพประตูตามขนาดที่กำหนด (หรือสี่เหลี่ยมสีม่วงถ้าโหลดรูปไม่สำเร็จ)
+    // วาดรูปภาพประตูตามขนาดที่กำหนด 
     public void draw(Graphics2D g) {
         if (portalImage != null) {
-            // << 3. วาดรูปภาพตามขนาด width, height ที่กำหนดไว้ >>
             g.drawImage(portalImage, x, y, width, height, null);
         } else {
             // วาดสี่เหลี่ยมสีม่วงสำรองถ้าโหลดรูปไม่สำเร็จ
@@ -69,7 +65,7 @@ public class Portal {
         }
     }
 
-    // คืนค่าขอบเขตสำหรับเช็คการชน (ใช้ขนาดที่กำหนด)
+    // คืนค่าขอบเขตสำหรับเช็คการชน 
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
     }

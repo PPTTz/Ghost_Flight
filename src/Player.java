@@ -57,10 +57,6 @@ public class Player extends GameObject {
             g.setColor(Color.CYAN);
             g.fillRect(x, y, width, height);
         }
-
-        // วาดกรอบ Hitbox สีแดงทับลงไป
-        g.setColor(Color.RED);
-        g.drawRect(x, y, width, height); // วาดกรอบตามขนาด width, height ของ Player
     }
 
     @Override
